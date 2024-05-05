@@ -2,6 +2,7 @@ const wrapper = document.querySelector(".wrapper"),
   qrInput = wrapper.querySelector(".form input"),
   generateBtn = wrapper.querySelector(".form button"),
   qrImg = wrapper.querySelector(".qr-code img");
+const downloadBtn = document.querySelector(".download-btn");
 let preValue;
 
 generateBtn.addEventListener("click", () => {
@@ -13,6 +14,7 @@ generateBtn.addEventListener("click", () => {
   qrImg.addEventListener("load", () => {
     wrapper.classList.add("active");
     generateBtn.innerText = "Generate QR Code";
+    downloadBtn.classList.add("active");
   });
 });
 
@@ -44,3 +46,23 @@ actionButton.forEach((button) => {
     }
   });
 });
+
+downloadBtn.addEventListener("click", () => {
+  const imageSrc = qrImg.getAttribute("src");
+  const imageName = getImageName(imageSrc);
+
+  // Create a link element
+  const downloadLink = document.createElement("a");
+  downloadLink.href = imageSrc;
+  downloadLink.download = imageName;
+
+  // Simulate click on the link to start download
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+});
+
+function getImageName(imageSrc) {
+  const lastSlashIndex = imageSrc.lastIndexOf("/");
+  return imageSrc.substring(lastSlashIndex + 1);
+}
